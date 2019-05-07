@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <title>Задание № 1</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/jquery-ui.min.js"></script>
+</head>
+  
+<body>
+    <div class="container">
+        <div class="form-group">
+            <button id="button" class="btn btn-primary btn-top">Удаление товара</button>
+            <button type="button" class="btn btn-primary btn-top" data-toggle="modal" data-target="#exampleModal">
+                Добавить товар
+            </button>
+        </div>
+        <table id="table1" class="table table-bordered">
+            <thead>
+                <tr>
+                    <td>Производитель</td>
+                    <td>Наименование</td>
+                    <td>Цена</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="draggable">
+                    <td>Apacer</td>
+                    <td>SSD 120GB</td>
+                    <td>1250</td>
+                </tr>
+                <tr>
+                    <td>Apacer</td>
+                    <td>SSD 128GB</td>
+                    <td>1650</td>
+                </tr>
+                <tr>
+                    <td>Apacer</td>
+                    <td>SSD 240GB</td>
+                    <td>2500</td>
+                </tr>
+                <tr>
+                    <td>Apacer</td>
+                    <td>SSD 480GB</td>
+                    <td>6000</td>
+                </tr>
+                <tr>
+                    <td>Corsair</td>
+                    <td>SSD 240GB</td>
+                    <td>3950</td>
+                </tr>
+                <tr>
+                    <td>Kingston</td>
+                    <td>SSD 120GB</td>
+                    <td>1550</td>
+                </tr>
+                <tr>
+                    <td>Kingston</td>
+                    <td>SSD 240GB</td>
+                    <td>2250</td>
+                </tr>
+                <tr>
+                    <td>Kingston</td>
+                    <td>SSD 480GB</td>
+                    <td>4350</td>
+                </tr>
+                <tr>
+                    <td>Kingston</td>
+                    <td>SSD 960GB</td>
+                    <td>12000</td>
+                </tr>
+                <tr>
+                    <td>Samsung </td>
+                    <td>SSD 120GB</td>
+                    <td>2500</td>
+                </tr>
+                <tr>
+                    <td>Samsung</td>
+                    <td>SSD 250GB</td>
+                    <td>4300</td>
+                </tr>
+                <tr>
+                    <td>Samsung</td>
+                    <td>SSD 500GB</td>
+                    <td>7000</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Новый товар</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Производитель</label>
+                        <input type="text" class="form-control" id="article">
+                    </div>
+                    <div class="form-group">
+                        <label>Наименование товара</label>
+                        <input type="text" class="form-control" id="name">
+                    </div>
+                    <div class="form-group">
+                        <label>Цена</label>
+                        <input type="text" class="form-control" id="price">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                    <button id="add" type="button" class="btn btn-primary">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<style>
+    tr.selected {
+        background-color: #B0BED9;
+    }
+
+    .btn-top{
+        margin-top: 15px;
+    }
+</style>
+
+
+<script type="text/javascript">
+    $(function () {
+        $("#table1 tbody").sortable({
+            cursor: "move",
+            placeholder: "sortable-placeholder",
+            helper: function (e, tr) {
+                var $originals = tr.children();
+                var $helper = tr.clone();
+                $helper.children().each(function (index) {
+                    $(this).width($originals.eq(index).width());
+                });
+                return $helper;
+            }
+        }).disableSelection();
+    });
+
+    $(document).ready(function ()
+    {
+        var table = $('#table1').DataTable({
+            "info": false,
+            "oLanguage": {
+                "sLengthMenu": "_MENU_",
+                "sZeroRecords": "Нет данных...",
+                "sInfo": "Открыто от START  до END записи из TOTAL ",
+                "sInfoEmpty": "Showing 0 to 0 of 0 records",
+                "sInfoFiltered": "(найдено из MAX )",
+                "sSearch": "Поиск",
+                "oPaginate": {
+                    "sFirst": "начало",
+                    "sPrevious": "назад",
+                    "sNext": "вперед",
+                    "sLast": "конец"
+                }
+            }      
+        });
+
+        $('#table1 tbody').on('click', 'tr', function () {
+            $(this).toggleClass('selected');
+        });
+
+        $('#button').click(function () {
+            table.rows('.selected').remove().draw(false);
+        });
+
+        $('#add').click(function () {
+            var article = $('#article').val();
+            var name = $('#name').val();
+            var price = $('#price').val();
+            table.row.add([article, name, price]).draw(false);
+            $('#exampleModal').modal('toggle');
+        });
+
+        
+
+    });
+</script>
